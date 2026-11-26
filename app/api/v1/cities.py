@@ -1,0 +1,35 @@
+from fastapi import FastAPI
+from fastapi import HTTPException
+from fastapi import APIRouter
+router=APIRouter()
+
+cities = [
+    {"id": 1, "name": "Hyderabad", "state": "Telangana"},
+    {"id": 2, "name": "Bangalore", "state": "Karnataka"},
+    {"id": 3, "name": "Chennai", "state": "Tamil Nadu"},
+    {"id": 4, "name": "Mumbai", "state": "Maharashtra"}
+]
+
+@router.get("/{city_id}")
+async def get_city_by_id(city_id:int):
+    for city in cities:
+        if city["id"]==city_id:
+            return city
+    raise HTTPException(
+         status_code=404,
+         detail="City Not found"
+    )
+
+@router.get("/")
+async def get_bus_by_state(state: str=None):
+    if state == None:
+         return cities
+    filtered_cities=[]
+    for city in cities:
+            if city["state"]==state:
+                filtered_cities.append(city)
+    
+    return filtered_cities
+
+
+

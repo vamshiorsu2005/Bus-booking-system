@@ -13,7 +13,7 @@ engine = create_async_engine(
     echo=settings.DEBUG and settings.ENV == "development"
 )
 
-AsyncSessionLocal = async_sessionmasyncio.run(fetch_data())ker(
+AsyncSessionLocal = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
     expire_on_commit=False

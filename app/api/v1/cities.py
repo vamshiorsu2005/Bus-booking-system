@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi import APIRouter
+from app.schemas.cities import CityResponse,CityCreate
 router=APIRouter()
 
 cities = [
@@ -21,7 +22,7 @@ async def get_city_by_id(city_id:int):
     )
 
 @router.get("/")
-async def get_bus_by_state(state: str=None):
+async def get_city_by_state(state: str=None):
     if state == None:
          return cities
     filtered_cities=[]
@@ -31,5 +32,17 @@ async def get_bus_by_state(state: str=None):
     
     return filtered_cities
 
+@router.post("/",response_model=CityResponse,status_code=201)
+async def create_city(city:CityCreate):
+     new_id = max(c["id"] for c in cities) + 1
+     new_city={
+          "id":new_id,
+          "name":city.name,
+          "state":city.state
+     }
+     cities.append(new_city)
+     return new_city
+
+     
 
 
